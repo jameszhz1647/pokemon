@@ -1,5 +1,7 @@
+
 const MAP_SIZE = 500
-const NU_CENTER = ol.proj.fromLonLat([-87.6753, 42.056])
+// const NU_CENTER = ol.proj.fromLonLat([-87.6753, 42.056])
+const NU_CENTER = [ -9760984.301366556, 5167673.306377815 ]
 
 // downtown center, uncomment to use downtown instead, or make your own
 // const NU_CENTER = ol.proj.fromLonLat([-87.6813, 42.049])
@@ -17,7 +19,9 @@ let landmarkCount = 0
 let gameState = {
 	points: 0,
 	captured: [],
-	messages: []
+	messages: [],
+	distance: 0,
+	prev_location:NU_CENTER
 }
 
 // Create an interactive map
@@ -27,7 +31,7 @@ let map = new InteractiveMap({
 	mapCenter: NU_CENTER,
 
 	// Ranges
-	ranges: [500, 200, 90, 1], // must be in reverse order
+	ranges: [500, 200, 20, 1], // must be in reverse order
 
 	initializeMap() {
 		// A good place to load landmarks
@@ -47,7 +51,7 @@ let map = new InteractiveMap({
 
 			// make a polar offset (radius, theta) 
 			// from the map's center (units are *approximately* meters)
-			let position = clonePolarOffset(NU_CENTER, 400*Math.random() + 300, 20*Math.random())
+			let position = clonePolarOffset(NU_CENTER, 200*Math.random() + 30, 100*Math.random())
 			this.createLandmark({
 				pos: position,
 				name: words.getRandomWord(),
@@ -57,6 +61,15 @@ let map = new InteractiveMap({
 
 	update() {
 		// Do something each frame
+		gameState.location = map.playerCoords
+		map.userLocation = map.playerCoords
+		gameState.distance += getDistance(map.playerCoords, gameState.prev_location)
+		gameState.prev_location = map.playerCoords
+		if (gameState.points >= 30){
+			window.alert('Congrats');
+			gameState.points = 0
+		}
+
 	},
 
 	initializeLandmark: (landmark, isPlayer) => {
