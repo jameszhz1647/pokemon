@@ -31,11 +31,11 @@ let map = new InteractiveMap({
 
 	initializeMap() {
 		// A good place to load landmarks
-		this.loadLandmarks("landmarks-interesting-evanston", (landmark) => {
+		this.loadLandmarks("landmarks-shop-evanston", (landmark) => {
 			// Keep this landmark?
 
 			// Keep all landmarks in the set
-			return true
+			return false
 
 			// Only keep this landmark if its a store or amenity, e.g.
 			// return landmark.properties.amenity || landmark.properties.store
@@ -43,7 +43,7 @@ let map = new InteractiveMap({
 
 		// Create random landmarks
 		// You can also use this to create trails or clusters for the user to find
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 20; i++) {
 
 			// make a polar offset (radius, theta) 
 			// from the map's center (units are *approximately* meters)
